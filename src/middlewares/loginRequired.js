@@ -14,16 +14,11 @@ export default async (req, res, next) => {
   try {
     const dados = jwt.verify(token, process.env.TOKEN_SECRET);
     const { id, email } = dados;
-
-    console.log("USER ID", id);
-    console.log("USER email", email);
-
     const user = await prismaClient.user.findUnique({
       where: {
         email,
       },
     });
-
     if (!user) {
       return res.status(401).json({
         errors: ["Usuário inválido!!"],

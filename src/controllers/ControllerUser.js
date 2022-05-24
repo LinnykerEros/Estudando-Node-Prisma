@@ -1,5 +1,5 @@
 import { prismaClient } from "../database/prismaCliente.js";
-
+import bcryptjs from "bcryptjs";
 export class UsersController {
   async createUser(req, res) {
     try {
@@ -10,6 +10,7 @@ export class UsersController {
           email,
         },
       });
+
       if (user) {
         return res.json({ error: "Usuário já cadastrado!" });
       }
@@ -17,7 +18,7 @@ export class UsersController {
       user = await prismaClient.user.create({
         data: {
           email,
-          password,
+          password_hash: await bcryptjs.hash(password, 8),
         },
       });
       return res.json(user);
@@ -36,6 +37,7 @@ export class UsersController {
           id: Number(id),
         },
       });
+
       if (!user) {
         return res.json({ error: "Esse usuário não existe!" });
       }
@@ -68,14 +70,19 @@ export class UsersController {
       if (!user) {
         return res.json({ error: "Esse usuário não existe!" });
       }
-
+      if (!email || !password) {
+        return res.status(401).json({
+          errors: ["Credencias inválidas!"],
+        });
+      }
+      console.log(user.password_hash);
       user = await prismaClient.user.update({
         where: {
           id: Number(id),
         },
         data: {
           email,
-          password,
+          password_hash: await bcryptjs.hash(password, 8),
         },
       });
       return res.json(user);

@@ -12,8 +12,8 @@ CREATE TABLE `products` (
 -- CreateTable
 CREATE TABLE `user` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `email` VARCHAR(191) NOT NULL,
-    `password` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL DEFAULT '',
+    `password_hash` VARCHAR(191) NOT NULL DEFAULT '',
     `permisson` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

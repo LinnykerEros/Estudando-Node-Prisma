@@ -1,5 +1,6 @@
 import { prismaClient } from "../../database/prismaCliente.js";
 import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
 export class TokenController {
   async handle(req, res) {
     const { email, password } = req.body;
@@ -16,7 +17,13 @@ export class TokenController {
     if (!user) {
       return res.json({ error: "Esse usuário não existe!" });
     }
-    if (user.password !== password) {
+    // if (user.password !== password) {
+    //   return res.json({ error: "Senha inválida!" });
+    // }
+    const passwordIsValid = (password) => {
+      return bcryptjs.compare(password, user.password_hash);
+    };
+    if (!(await passwordIsValid(password))) {
       return res.json({ error: "Senha inválida!" });
     }
     const { id } = user;

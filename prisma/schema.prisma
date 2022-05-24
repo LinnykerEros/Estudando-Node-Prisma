@@ -16,7 +16,6 @@ model Product {
   description String 
   verified    Boolean?
   created_at  DateTime @default(now())
-
   @@map("products")
   product Feedback []
   productCategory ProductCategory []
@@ -26,8 +25,8 @@ model Product {
 
 model User{ 
   id          Int @id @default(autoincrement())
-  email       String @unique
-  password    String
+  email       String @unique @default("") 
+  password_hash String @default("")
   permisson   String?
   created_at  DateTime @default(now())
   @@map("user")
