@@ -41,8 +41,7 @@ export class UsersController {
       if (!user) {
         return res.json({ error: "Esse usuário não existe!" });
       }
-      // console.log("USER ID", req.userId);
-      // console.log("USER Email", req.userEmail);
+
       return res.json(user);
     } catch (err) {
       return res.json(err);
